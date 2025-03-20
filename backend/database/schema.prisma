@@ -1,0 +1,36 @@
+// database
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// generator
+generator client {
+  provider             = "prisma-client-py"
+  recursive_type_depth = 5
+}
+
+// Non-relation models
+model User {
+  id                  Int                   @id @default(autoincrement())
+  clerk_id            String?               @unique
+  guest_id            String?               @unique
+  email               String?               @unique
+  phone_number        String?
+  username            String
+  first_name          String?
+  last_name           String?
+  gender_id           Int?
+  birth_date          DateTime?
+  location            String?
+  profile_image_url   String?
+  created_at          DateTime              @default(now())
+  updated_at          DateTime?
+  Gender              Gender?               @relation(fields: [gender_id], references: [id])
+}
+
+model Gender {
+  id   Int    @id @default(autoincrement())
+  name String
+  User User[]
+}
