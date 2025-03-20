@@ -1,0 +1,139 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 0 100% 40%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 0 100% 40%;
+    --radius: 0.5rem;
+
+    /* Sustainability theme colors */
+    --eco-green: 142 76% 36%;
+    --eco-green-light: 142 76% 90%;
+    --eco-blue: 199 89% 48%;
+    --eco-blue-light: 199 89% 90%;
+    --eco-orange: 27 96% 61%;
+    --eco-orange-light: 27 96% 90%;
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 100% 40%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 0 100% 40%;
+
+    /* Sustainability theme colors - dark mode */
+    --eco-green: 142 76% 36%;
+    --eco-green-light: 142 36% 20%;
+    --eco-blue: 199 89% 48%;
+    --eco-blue-light: 199 49% 20%;
+    --eco-orange: 27 96% 61%;
+    --eco-orange-light: 27 56% 20%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 0 0% 98%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.bg-eco-green {
+  background-color: hsl(var(--eco-green));
+}
+
+.bg-eco-green-light {
+  background-color: hsl(var(--eco-green-light));
+}
+
+.text-eco-green {
+  color: hsl(var(--eco-green));
+}
+
+.bg-eco-blue {
+  background-color: hsl(var(--eco-blue));
+}
+
+.bg-eco-blue-light {
+  background-color: hsl(var(--eco-blue-light));
+}
+
+.text-eco-blue {
+  color: hsl(var(--eco-blue));
+}
+
+.bg-eco-orange {
+  background-color: hsl(var(--eco-orange));
+}
+
+.bg-eco-orange-light {
+  background-color: hsl(var(--eco-orange-light));
+}
+
+.text-eco-orange {
+  color: hsl(var(--eco-orange));
+}
+
