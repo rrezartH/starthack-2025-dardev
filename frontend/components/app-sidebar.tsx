@@ -1,37 +1,8 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
-import Image from "next/image"
-import { usePathname } from "next/navigation"
-import {
-  BarChart3,
-  Calendar,
-  Home,
-  MessageSquare,
-  Settings,
-  Users,
-  Leaf,
-  FileText,
-  HelpCircle,
-  Lightbulb,
-  Network,
-} from "lucide-react"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarTrigger,
-  SidebarGroup,
-  SidebarGroupLabel,
-  SidebarGroupContent,
-} from "@/components/ui/sidebar"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,21 +10,56 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/dropdown-menu";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import {
+  BarChart3,
+  Calendar,
+  FileText,
+  HelpCircle,
+  Home,
+  Leaf,
+  Lightbulb,
+  MessageSquare,
+  Network,
+  Settings,
+  Users,
+} from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 export default function AppSidebar() {
-  const pathname = usePathname()
-  const [open, setOpen] = useState(true)
+  const pathname = usePathname();
+  const [open, setOpen] = useState(true);
 
-  const isActive = (path: string) => pathname === path
+  const isActive = (path: string) => pathname === path;
 
   return (
     <Sidebar>
       <SidebarHeader className="border-b">
         <div className="flex items-center justify-between p-4">
           <Link href="/" className="flex items-center gap-2">
-            <Image src="/images/virgin-logo.png" alt="Virgin Logo" width={100} height={40} className="h-auto" />
+            <Image
+              src="/images/virgin-sustain_logo.png"
+              alt="Virgin Logo"
+              width={100}
+              height={40}
+              className="h-auto"
+            />
           </Link>
           <SidebarTrigger />
         </div>
@@ -214,12 +220,17 @@ export default function AppSidebar() {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="w-full justify-start px-2">
               <Avatar className="h-8 w-8 mr-2">
-                <AvatarImage src="/placeholder.svg?height=32&width=32" alt="User" />
+                <AvatarImage
+                  src="/placeholder.svg?height=32&width=32"
+                  alt="User"
+                />
                 <AvatarFallback>VH</AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start text-sm">
                 <span className="font-medium">Virgin Hotels</span>
-                <span className="text-xs text-muted-foreground">Sustainability Lead</span>
+                <span className="text-xs text-muted-foreground">
+                  Sustainability Lead
+                </span>
               </div>
             </Button>
           </DropdownMenuTrigger>
@@ -235,6 +246,5 @@ export default function AppSidebar() {
         </DropdownMenu>
       </SidebarFooter>
     </Sidebar>
-  )
+  );
 }
-

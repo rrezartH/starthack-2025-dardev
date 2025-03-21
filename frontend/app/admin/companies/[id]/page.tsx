@@ -1,49 +1,56 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { useParams, useRouter } from "next/navigation"
-import Link from "next/link"
-import Header from "@/components/header"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Progress } from "@/components/ui/progress"
-import { Separator } from "@/components/ui/separator"
+import Header from "@/components/header";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { virginCompanies } from "@/lib/virgin-companies-data";
+import {
+  AlertTriangle,
   ArrowLeft,
+  BarChart3,
+  Building,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  Download,
   Edit,
+  Eye,
+  Globe,
+  Leaf,
+  Mail,
+  MapPin,
+  Phone,
   Trash2,
   TrendingDown,
   TrendingUp,
   Users,
-  Building,
-  Globe,
-  Mail,
-  Phone,
-  MapPin,
-  Calendar,
-  BarChart3,
-  Leaf,
-  AlertTriangle,
-  CheckCircle2,
-  Clock,
-  Eye,
-  Download,
-} from "lucide-react"
-import { virginCompanies } from "@/lib/virgin-companies-data"
+} from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function CompanyDetailPage() {
-  const params = useParams()
-  const router = useRouter()
-  const companyId = params.id as string
-  const [company, setCompany] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+  const params = useParams();
+  const router = useRouter();
+  const companyId = params.id as string;
+  const [company, setCompany] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     // Find the company by ID
-    const foundCompany = virginCompanies.find((c) => c.id === companyId)
+    const foundCompany = virginCompanies.find((c) => c.id === companyId);
 
     if (foundCompany) {
       // Enhance the company with additional mock data for the detail view
@@ -57,9 +64,21 @@ export default function CompanyDetailPage() {
         founded: 2000 + Math.floor(Math.random() * 20),
         sustainabilityScore: Math.floor(Math.random() * 40) + 60,
         sustainabilityGoals: [
-          { name: "Carbon Neutrality", target: "2030", progress: Math.floor(Math.random() * 60) + 20 },
-          { name: "Zero Waste", target: "2028", progress: Math.floor(Math.random() * 70) + 10 },
-          { name: "Renewable Energy", target: "2025", progress: Math.floor(Math.random() * 50) + 40 },
+          {
+            name: "Carbon Neutrality",
+            target: "2030",
+            progress: Math.floor(Math.random() * 60) + 20,
+          },
+          {
+            name: "Zero Waste",
+            target: "2028",
+            progress: Math.floor(Math.random() * 70) + 10,
+          },
+          {
+            name: "Renewable Energy",
+            target: "2025",
+            progress: Math.floor(Math.random() * 50) + 40,
+          },
         ],
         recentInitiatives: [
           {
@@ -105,11 +124,11 @@ export default function CompanyDetailPage() {
           current: Math.floor(Math.random() * 100000) + 50000,
           trend: (Math.random() - 0.5) * 0.2, // Random trend between -20% and +20%
         },
-      })
+      });
     }
 
-    setLoading(false)
-  }, [companyId])
+    setLoading(false);
+  }, [companyId]);
 
   if (loading) {
     return (
@@ -118,7 +137,11 @@ export default function CompanyDetailPage() {
           <Header />
           <main className="flex-1 p-6">
             <div className="flex items-center space-x-4 mb-6">
-              <Button variant="outline" size="icon" onClick={() => router.back()}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => router.back()}
+              >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
               <div className="h-8 w-64 bg-muted animate-pulse rounded-md"></div>
@@ -143,7 +166,7 @@ export default function CompanyDetailPage() {
           </main>
         </div>
       </div>
-    )
+    );
   }
 
   if (!company) {
@@ -153,18 +176,27 @@ export default function CompanyDetailPage() {
           <Header />
           <main className="flex-1 p-6">
             <div className="flex items-center space-x-4 mb-6">
-              <Button variant="outline" size="icon" onClick={() => router.back()}>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={() => router.back()}
+              >
                 <ArrowLeft className="h-4 w-4" />
               </Button>
-              <h1 className="text-2xl font-bold tracking-tight">Company Not Found</h1>
+              <h1 className="text-2xl font-bold tracking-tight">
+                Company Not Found
+              </h1>
             </div>
             <Card>
               <CardContent className="pt-6">
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <AlertTriangle className="h-12 w-12 text-muted-foreground mb-4" />
-                  <h2 className="text-xl font-semibold mb-2">Company Not Found</h2>
+                  <h2 className="text-xl font-semibold mb-2">
+                    Company Not Found
+                  </h2>
                   <p className="text-muted-foreground mb-6">
-                    The company you are looking for does not exist or has been removed.
+                    The company you are looking for does not exist or has been
+                    removed.
                   </p>
                   <Button asChild>
                     <Link href="/companies">Back to Companies</Link>
@@ -175,7 +207,7 @@ export default function CompanyDetailPage() {
           </main>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -188,9 +220,12 @@ export default function CompanyDetailPage() {
               <ArrowLeft className="h-4 w-4" />
             </Button>
             <div>
-              <h1 className="text-2xl font-bold tracking-tight">{company.name}</h1>
+              <h1 className="text-2xl font-bold tracking-tight">
+                {company.name}
+              </h1>
               <p className="text-muted-foreground">
-                {company.category} • {company.status === "active" ? "Active" : "Inactive"}
+                {company.category} •{" "}
+                {company.status === "active" ? "Active" : "Inactive"}
               </p>
             </div>
             <div className="ml-auto space-x-2">
@@ -226,11 +261,17 @@ export default function CompanyDetailPage() {
                     <div className="flex items-center space-x-4 mb-6">
                       <Avatar className="h-16 w-16">
                         <AvatarImage src={company.logo} alt={company.name} />
-                        <AvatarFallback>{company.name.substring(0, 2)}</AvatarFallback>
+                        <AvatarFallback>
+                          {company.name.substring(0, 2)}
+                        </AvatarFallback>
                       </Avatar>
                       <div>
-                        <h3 className="text-lg font-semibold">{company.name}</h3>
-                        <p className="text-sm text-muted-foreground">{company.description}</p>
+                        <h3 className="text-lg font-semibold">
+                          {company.name}
+                        </h3>
+                        <p className="text-sm text-muted-foreground">
+                          {company.description}
+                        </p>
                       </div>
                     </div>
 
@@ -260,11 +301,15 @@ export default function CompanyDetailPage() {
                       </div>
                       <div className="flex items-center">
                         <Users className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span className="text-sm">{company.employees.toLocaleString()} Employees</span>
+                        <span className="text-sm">
+                          {company.employees.toLocaleString()} Employees
+                        </span>
                       </div>
                       <div className="flex items-center">
                         <Building className="h-4 w-4 mr-2 text-muted-foreground" />
-                        <span className="text-sm">Founded {company.founded}</span>
+                        <span className="text-sm">
+                          Founded {company.founded}
+                        </span>
                       </div>
                     </div>
                   </CardContent>
@@ -277,33 +322,55 @@ export default function CompanyDetailPage() {
                   <CardContent>
                     <div className="mb-6">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm font-medium">Sustainability Score</span>
-                        <span className="text-sm font-medium">{company.sustainabilityScore}/100</span>
+                        <span className="text-sm font-medium">
+                          Sustainability Score
+                        </span>
+                        <span className="text-sm font-medium">
+                          {company.sustainabilityScore}/100
+                        </span>
                       </div>
-                      <Progress value={company.sustainabilityScore} className="h-2" />
+                      <Progress
+                        value={company.sustainabilityScore}
+                        className="h-2"
+                      />
                       <p className="text-xs text-muted-foreground mt-2">
-                        Based on carbon footprint, initiatives, and sustainability goals
+                        Based on carbon footprint, initiatives, and
+                        sustainability goals
                       </p>
                     </div>
 
                     <div className="space-y-4">
-                      <h4 className="text-sm font-semibold">Carbon Footprint</h4>
+                      <h4 className="text-sm font-semibold">
+                        Carbon Footprint
+                      </h4>
                       <div className="flex items-center justify-between">
                         <div>
                           <div className="text-2xl font-bold">
-                            {(company.carbonFootprint.current / 1000).toFixed(1)}K
+                            {(company.carbonFootprint.current / 1000).toFixed(
+                              1
+                            )}
+                            K
                           </div>
-                          <div className="text-xs text-muted-foreground">tons CO₂e</div>
+                          <div className="text-xs text-muted-foreground">
+                            tons CO₂e
+                          </div>
                         </div>
                         <div
-                          className={`flex items-center ${company.carbonFootprint.trend < 0 ? "text-green-500" : "text-red-500"}`}
+                          className={`flex items-center ${
+                            company.carbonFootprint.trend < 0
+                              ? "text-green-500"
+                              : "text-red-500"
+                          }`}
                         >
                           {company.carbonFootprint.trend < 0 ? (
                             <TrendingDown className="h-4 w-4 mr-1" />
                           ) : (
                             <TrendingUp className="h-4 w-4 mr-1" />
                           )}
-                          <span>{Math.abs(company.carbonFootprint.trend).toFixed(1)}% YoY</span>
+                          <span>
+                            {Math.abs(company.carbonFootprint.trend).toFixed(1)}
+                            % YoY
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -311,20 +378,28 @@ export default function CompanyDetailPage() {
                     <Separator className="my-4" />
 
                     <div>
-                      <h4 className="text-sm font-semibold mb-3">Sustainability Goals</h4>
+                      <h4 className="text-sm font-semibold mb-3">
+                        Sustainability Goals
+                      </h4>
                       <div className="space-y-3">
-                        {company.sustainabilityGoals.map((goal: any, index: number) => (
-                          <div key={index}>
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="text-sm">{goal.name}</span>
-                              <span className="text-xs text-muted-foreground">Target: {goal.target}</span>
+                        {company.sustainabilityGoals.map(
+                          (goal: any, index: number) => (
+                            <div key={index}>
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-sm">{goal.name}</span>
+                                <span className="text-xs text-muted-foreground">
+                                  Target: {goal.target}
+                                </span>
+                              </div>
+                              <Progress value={goal.progress} className="h-2" />
+                              <div className="flex justify-end mt-1">
+                                <span className="text-xs text-muted-foreground">
+                                  {goal.progress}% complete
+                                </span>
+                              </div>
                             </div>
-                            <Progress value={goal.progress} className="h-2" />
-                            <div className="flex justify-end mt-1">
-                              <span className="text-xs text-muted-foreground">{goal.progress}% complete</span>
-                            </div>
-                          </div>
-                        ))}
+                          )
+                        )}
                       </div>
                     </div>
                   </CardContent>
@@ -334,7 +409,9 @@ export default function CompanyDetailPage() {
               <Card>
                 <CardHeader className="pb-2">
                   <CardTitle>Recent Initiatives</CardTitle>
-                  <CardDescription>Latest sustainability initiatives by {company.name}</CardDescription>
+                  <CardDescription>
+                    Latest sustainability initiatives by {company.name}
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid gap-4 md:grid-cols-3">
@@ -342,16 +419,22 @@ export default function CompanyDetailPage() {
                       <Card key={initiative.id}>
                         <CardHeader className="p-4 pb-2">
                           <div className="flex justify-between items-start">
-                            <CardTitle className="text-base">{initiative.name}</CardTitle>
+                            <CardTitle className="text-base">
+                              {initiative.name}
+                            </CardTitle>
                             <Badge
                               variant={
                                 initiative.status === "Completed"
                                   ? "default"
                                   : initiative.status === "In Progress"
-                                    ? "secondary"
-                                    : "outline"
+                                  ? "secondary"
+                                  : "outline"
                               }
-                              className={initiative.status === "Completed" ? "bg-green-500" : ""}
+                              className={
+                                initiative.status === "Completed"
+                                  ? "bg-green-500"
+                                  : ""
+                              }
                             >
                               {initiative.status}
                             </Badge>
@@ -365,8 +448,15 @@ export default function CompanyDetailPage() {
                           <p className="text-sm">{initiative.impact}</p>
                         </CardContent>
                         <CardFooter className="p-4 pt-0">
-                          <Button variant="outline" size="sm" className="w-full" asChild>
-                            <Link href={`/initiatives/${initiative.id}`}>View Details</Link>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full"
+                            asChild
+                          >
+                            <Link href={`/initiatives/${initiative.id}`}>
+                              View Details
+                            </Link>
                           </Button>
                         </CardFooter>
                       </Card>
@@ -375,7 +465,9 @@ export default function CompanyDetailPage() {
                 </CardContent>
                 <CardFooter className="flex justify-center border-t px-6 py-4">
                   <Button variant="outline" asChild>
-                    <Link href={`/initiatives?company=${company.id}`}>View All Initiatives</Link>
+                    <Link href={`/initiatives?company=${company.id}`}>
+                      View All Initiatives
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>
@@ -389,13 +481,19 @@ export default function CompanyDetailPage() {
                     <CardContent>
                       <div className="flex items-center justify-between">
                         <div className="text-2xl font-bold">{metric.value}</div>
-                        <div className={`flex items-center ${metric.trend < 0 ? "text-green-500" : "text-red-500"}`}>
+                        <div
+                          className={`flex items-center ${
+                            metric.trend < 0 ? "text-green-500" : "text-red-500"
+                          }`}
+                        >
                           {metric.trend < 0 ? (
                             <TrendingDown className="h-4 w-4 mr-1" />
                           ) : (
                             <TrendingUp className="h-4 w-4 mr-1" />
                           )}
-                          <span>{Math.abs(Math.floor(Math.random() * 15) + 1)}%</span>
+                          <span>
+                            {Math.abs(Math.floor(Math.random() * 15) + 1)}%
+                          </span>
                         </div>
                       </div>
                     </CardContent>
@@ -410,7 +508,9 @@ export default function CompanyDetailPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle>Sustainability Initiatives</CardTitle>
-                      <CardDescription>All initiatives by {company.name}</CardDescription>
+                      <CardDescription>
+                        All initiatives by {company.name}
+                      </CardDescription>
                     </div>
                     <Button>
                       <Leaf className="mr-2 h-4 w-4" />
@@ -440,11 +540,13 @@ export default function CompanyDetailPage() {
                             "Carbon Offset Program",
                             "Plastic Reduction Campaign",
                           ][Math.floor(Math.random() * 5)],
-                          status: ["Completed", "In Progress", "Planned"][Math.floor(Math.random() * 3)],
+                          status: ["Completed", "In Progress", "Planned"][
+                            Math.floor(Math.random() * 3)
+                          ],
                           date: new Date(
                             2023 + Math.floor(Math.random() * 2),
                             Math.floor(Math.random() * 12),
-                            Math.floor(Math.random() * 28) + 1,
+                            Math.floor(Math.random() * 28) + 1
                           )
                             .toISOString()
                             .split("T")[0],
@@ -455,21 +557,30 @@ export default function CompanyDetailPage() {
                             "Saved 500,000 liters of water annually",
                             "Eliminated 2 tons of single-use plastic",
                           ][Math.floor(Math.random() * 5)],
-                        }
+                        };
 
                         return (
-                          <div key={init.id} className="grid grid-cols-12 p-4 border-b items-center">
-                            <div className="col-span-4 font-medium">{init.name}</div>
+                          <div
+                            key={init.id}
+                            className="grid grid-cols-12 p-4 border-b items-center"
+                          >
+                            <div className="col-span-4 font-medium">
+                              {init.name}
+                            </div>
                             <div className="col-span-2">
                               <Badge
                                 variant={
                                   init.status === "Completed"
                                     ? "default"
                                     : init.status === "In Progress"
-                                      ? "secondary"
-                                      : "outline"
+                                    ? "secondary"
+                                    : "outline"
                                 }
-                                className={init.status === "Completed" ? "bg-green-500" : ""}
+                                className={
+                                  init.status === "Completed"
+                                    ? "bg-green-500"
+                                    : ""
+                                }
                               >
                                 {init.status === "Completed" ? (
                                   <CheckCircle2 className="mr-1 h-3 w-3" />
@@ -484,7 +595,9 @@ export default function CompanyDetailPage() {
                             <div className="col-span-2 text-sm text-muted-foreground">
                               {new Date(init.date).toLocaleDateString()}
                             </div>
-                            <div className="col-span-3 text-sm">{init.impact}</div>
+                            <div className="col-span-3 text-sm">
+                              {init.impact}
+                            </div>
                             <div className="col-span-1 text-right">
                               <Button variant="ghost" size="icon" asChild>
                                 <Link href={`/initiatives/${init.id}`}>
@@ -493,12 +606,14 @@ export default function CompanyDetailPage() {
                               </Button>
                             </div>
                           </div>
-                        )
+                        );
                       })}
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                  <div className="text-sm text-muted-foreground">Showing 7 of {company.initiatives} initiatives</div>
+                  <div className="text-sm text-muted-foreground">
+                    Showing 7 of {company.initiatives} initiatives
+                  </div>
                   <Button variant="outline">View All</Button>
                 </CardFooter>
               </Card>
@@ -510,7 +625,9 @@ export default function CompanyDetailPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle>Sustainability Metrics</CardTitle>
-                      <CardDescription>Key performance indicators and trends</CardDescription>
+                      <CardDescription>
+                        Key performance indicators and trends
+                      </CardDescription>
                     </div>
                     <div className="flex space-x-2">
                       <Button variant="outline">
@@ -528,10 +645,13 @@ export default function CompanyDetailPage() {
                   <div className="h-[400px] flex items-center justify-center bg-muted/20 rounded-md border border-dashed">
                     <div className="text-center">
                       <BarChart3 className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
-                      <h3 className="text-lg font-medium mb-2">Metrics Visualization</h3>
+                      <h3 className="text-lg font-medium mb-2">
+                        Metrics Visualization
+                      </h3>
                       <p className="text-sm text-muted-foreground max-w-md mx-auto mb-4">
-                        Interactive charts and graphs would be displayed here showing carbon emissions, energy usage,
-                        waste reduction, and other sustainability metrics over time.
+                        Interactive charts and graphs would be displayed here
+                        showing carbon emissions, energy usage, waste reduction,
+                        and other sustainability metrics over time.
                       </p>
                       <Button variant="outline">Configure Dashboard</Button>
                     </div>
@@ -546,7 +666,9 @@ export default function CompanyDetailPage() {
                   <div className="flex items-center justify-between">
                     <div>
                       <CardTitle>Company Users</CardTitle>
-                      <CardDescription>Manage users with access to {company.name}</CardDescription>
+                      <CardDescription>
+                        Manage users with access to {company.name}
+                      </CardDescription>
                     </div>
                     <Button>
                       <Users className="mr-2 h-4 w-4" />
@@ -565,15 +687,29 @@ export default function CompanyDetailPage() {
                     {Array(5)
                       .fill(null)
                       .map((_, index) => {
-                        const roles = ["Admin", "Editor", "Viewer"]
-                        const role = roles[Math.floor(Math.random() * roles.length)]
-                        const firstName = ["John", "Sarah", "Michael", "Emma", "David"][Math.floor(Math.random() * 5)]
-                        const lastName = ["Smith", "Johnson", "Williams", "Brown", "Jones"][
-                          Math.floor(Math.random() * 5)
-                        ]
+                        const roles = ["Admin", "Editor", "Viewer"];
+                        const role =
+                          roles[Math.floor(Math.random() * roles.length)];
+                        const firstName = [
+                          "John",
+                          "Sarah",
+                          "Michael",
+                          "Emma",
+                          "David",
+                        ][Math.floor(Math.random() * 5)];
+                        const lastName = [
+                          "Smith",
+                          "Johnson",
+                          "Williams",
+                          "Brown",
+                          "Jones",
+                        ][Math.floor(Math.random() * 5)];
 
                         return (
-                          <div key={index} className="grid grid-cols-12 p-4 border-b items-center">
+                          <div
+                            key={index}
+                            className="grid grid-cols-12 p-4 border-b items-center"
+                          >
                             <div className="col-span-4 flex items-center">
                               <Avatar className="h-8 w-8 mr-2">
                                 <AvatarFallback>
@@ -586,19 +722,29 @@ export default function CompanyDetailPage() {
                                   {firstName} {lastName}
                                 </div>
                                 <div className="text-xs text-muted-foreground">
-                                  {firstName.toLowerCase()}.{lastName.toLowerCase()}@{company.website}
+                                  {firstName.toLowerCase()}.
+                                  {lastName.toLowerCase()}@{company.website}
                                 </div>
                               </div>
                             </div>
                             <div className="col-span-3">
                               <Badge
-                                variant={role === "Admin" ? "default" : role === "Editor" ? "secondary" : "outline"}
+                                variant={
+                                  role === "Admin"
+                                    ? "default"
+                                    : role === "Editor"
+                                    ? "secondary"
+                                    : "outline"
+                                }
                               >
                                 {role}
                               </Badge>
                             </div>
                             <div className="col-span-3 text-sm text-muted-foreground">
-                              {new Date(Date.now() - Math.floor(Math.random() * 10) * 86400000).toLocaleDateString()}
+                              {new Date(
+                                Date.now() -
+                                  Math.floor(Math.random() * 10) * 86400000
+                              ).toLocaleDateString()}
                             </div>
                             <div className="col-span-2 flex justify-end space-x-1">
                               <Button variant="ghost" size="icon">
@@ -609,7 +755,7 @@ export default function CompanyDetailPage() {
                               </Button>
                             </div>
                           </div>
-                        )
+                        );
                       })}
                   </div>
                 </CardContent>
@@ -620,16 +766,21 @@ export default function CompanyDetailPage() {
               <Card>
                 <CardHeader>
                   <CardTitle>Company Settings</CardTitle>
-                  <CardDescription>Manage company information and preferences</CardDescription>
+                  <CardDescription>
+                    Manage company information and preferences
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="h-[400px] flex items-center justify-center bg-muted/20 rounded-md border border-dashed">
                     <div className="text-center">
                       <Building className="h-10 w-10 mx-auto text-muted-foreground mb-4" />
-                      <h3 className="text-lg font-medium mb-2">Company Settings</h3>
+                      <h3 className="text-lg font-medium mb-2">
+                        Company Settings
+                      </h3>
                       <p className="text-sm text-muted-foreground max-w-md mx-auto mb-4">
-                        This section would contain forms to edit company details, notification preferences, integration
-                        settings, and other configuration options.
+                        This section would contain forms to edit company
+                        details, notification preferences, integration settings,
+                        and other configuration options.
                       </p>
                       <Button variant="outline">Edit Settings</Button>
                     </div>
@@ -641,6 +792,5 @@ export default function CompanyDetailPage() {
         </main>
       </div>
     </div>
-  )
+  );
 }
-

@@ -16,23 +16,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import {
-  BarChart,
-  Download,
-  Filter,
-  Globe,
-  Heart,
-  LineChart,
-  PieChart,
-  Recycle,
-} from "lucide-react";
+import { BarChart, Download, Filter, LineChart, PieChart } from "lucide-react";
 
 export default function AnalyticsPage() {
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="flex-1 overflow-auto p-6">
+      <div className="flex-1 p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">
@@ -67,7 +57,7 @@ export default function AnalyticsPage() {
           </div>
         </div>
 
-        <Tabs defaultValue="overview" className="mb-6">
+        {/*         <Tabs defaultValue="overview" className="mb-6">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger
@@ -88,7 +78,7 @@ export default function AnalyticsPage() {
             <TabsTrigger value="companies">Companies</TabsTrigger>
           </TabsList>
         </Tabs>
-
+ */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3 mb-6">
           <Card className="border-l-4 border-l-[hsl(var(--eco-green))]">
             <CardHeader className="pb-2">

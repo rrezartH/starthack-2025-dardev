@@ -1,30 +1,45 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useParams, useRouter } from "next/navigation"
-import Link from "next/link"
-import Header from "@/components/header"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { ChevronLeft, ThumbsUp, MessageSquare, Share2, Users, Calendar, Lightbulb } from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { format } from "date-fns"
-import { getIdeaById } from "@/lib/ideas-data"
+import Header from "@/components/header";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { getIdeaById } from "@/lib/ideas-data";
+import { format } from "date-fns";
+import {
+  Calendar,
+  ChevronLeft,
+  Lightbulb,
+  MessageSquare,
+  Share2,
+  ThumbsUp,
+  Users,
+} from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Comment {
-  id: string
+  id: string;
   author: {
-    name: string
-    avatar: string
-    initials: string
-    company: string
-  }
-  date: string
-  content: string
-  likes: number
+    name: string;
+    avatar: string;
+    initials: string;
+    company: string;
+  };
+  date: string;
+  content: string;
+  likes: number;
 }
 
 // Sample data for the idea
@@ -74,7 +89,11 @@ const ideasData = [
     date: "2025-03-18",
     expectedImpact:
       "This program could divert an estimated 500,000 kg of waste from landfills annually across all Virgin properties. It would also create a more consistent customer experience and reinforce Virgin's sustainability brand.",
-    potentialCollaborators: ["Virgin Atlantic", "Virgin Voyages", "Virgin Media"],
+    potentialCollaborators: [
+      "Virgin Atlantic",
+      "Virgin Voyages",
+      "Virgin Media",
+    ],
     resourcesNeeded:
       "Standardized recycling bins, signage, staff training materials, and a cross-company working group to implement and monitor the program.",
   },
@@ -97,29 +116,30 @@ const ideasData = [
     expectedImpact:
       "This initiative could generate clean energy for both Virgin properties and local communities, reducing carbon emissions and energy costs.",
     potentialCollaborators: ["Virgin Hotels", "Virgin Investments"],
-    resourcesNeeded: "Initial funding for solar installations, technical expertise, and community partnerships.",
+    resourcesNeeded:
+      "Initial funding for solar installations, technical expertise, and community partnerships.",
   },
-]
+];
 
 export default function IdeaDetailPage() {
-  const { id } = useParams()
-  const router = useRouter()
+  const { id } = useParams();
+  const router = useRouter();
   // Use the imported function to get the idea
-  const idea = getIdeaById(id as string)
+  const idea = getIdeaById(id as string);
 
-  const [newComment, setNewComment] = useState("")
-  const [comments, setComments] = useState<Comment[]>(idea?.comments || [])
-  const [voteCount, setVoteCount] = useState(idea?.votes || 0)
-  const [hasVoted, setHasVoted] = useState(false)
+  const [newComment, setNewComment] = useState("");
+  const [comments, setComments] = useState<Comment[]>(idea?.comments || []);
+  const [voteCount, setVoteCount] = useState(idea?.votes || 0);
+  const [hasVoted, setHasVoted] = useState(false);
 
   if (!idea) {
     // Redirect to the ideas page if the idea is not found
-    router.push("/ideas")
-    return null
+    router.push("/ideas");
+    return null;
   }
 
   const handleAddComment = () => {
-    if (!newComment.trim()) return
+    if (!newComment.trim()) return;
 
     const comment: Comment = {
       id: `c${Date.now()}`,
@@ -132,39 +152,55 @@ export default function IdeaDetailPage() {
       date: new Date().toISOString().split("T")[0],
       content: newComment,
       likes: 0,
-    }
+    };
 
-    setComments([comment, ...comments])
-    setNewComment("")
-  }
+    setComments([comment, ...comments]);
+    setNewComment("");
+  };
 
   const handleVote = () => {
     if (hasVoted) {
-      setVoteCount(voteCount - 1)
+      setVoteCount(voteCount - 1);
     } else {
-      setVoteCount(voteCount + 1)
+      setVoteCount(voteCount + 1);
     }
-    setHasVoted(!hasVoted)
-  }
+    setHasVoted(!hasVoted);
+  };
 
   const handleLikeComment = (commentId: string) => {
     setComments(
-      comments.map((comment) => (comment.id === commentId ? { ...comment, likes: comment.likes + 1 } : comment)),
-    )
-  }
+      comments.map((comment) =>
+        comment.id === commentId
+          ? { ...comment, likes: comment.likes + 1 }
+          : comment
+      )
+    );
+  };
 
   const getCategoryBadge = () => {
     switch (idea.category) {
       case "environmental":
-        return <Badge className="bg-eco-green-light text-eco-green">Environmental</Badge>
+        return (
+          <Badge className="bg-eco-green-light text-eco-green">
+            Environmental
+          </Badge>
+        );
       case "social":
-        return <Badge className="bg-eco-blue-light text-eco-blue">Social Impact</Badge>
+        return (
+          <Badge className="bg-eco-blue-light text-eco-blue">
+            Social Impact
+          </Badge>
+        );
       case "circular":
-        return <Badge className="bg-eco-orange-light text-eco-orange">Circular Economy</Badge>
+        return (
+          <Badge className="bg-eco-orange-light text-eco-orange">
+            Circular Economy
+          </Badge>
+        );
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -199,12 +235,17 @@ export default function IdeaDetailPage() {
               <h1 className="text-3xl font-bold">{idea.title}</h1>
               <div className="mt-4 flex items-center gap-3">
                 <Avatar className="h-10 w-10">
-                  <AvatarImage src={idea.author.avatar} alt={idea.author.name} />
+                  <AvatarImage
+                    src={idea.author.avatar}
+                    alt={idea.author.name}
+                  />
                   <AvatarFallback>{idea.author.initials}</AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-medium">{idea.author.name}</p>
-                  <p className="text-sm text-muted-foreground">{idea.author.company}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {idea.author.company}
+                  </p>
                 </div>
               </div>
             </div>
@@ -212,7 +253,9 @@ export default function IdeaDetailPage() {
             <Tabs defaultValue="overview">
               <TabsList className="mb-4">
                 <TabsTrigger value="overview">Overview</TabsTrigger>
-                <TabsTrigger value="discussion">Discussion ({comments.length})</TabsTrigger>
+                <TabsTrigger value="discussion">
+                  Discussion ({comments.length})
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-6">
@@ -225,11 +268,13 @@ export default function IdeaDetailPage() {
                   </CardHeader>
                   <CardContent>
                     <div className="prose max-w-none">
-                      {idea.description.split("\n\n").map((paragraph, index) => (
-                        <p key={index} className="mb-4 text-muted-foreground">
-                          {paragraph}
-                        </p>
-                      ))}
+                      {idea.description
+                        .split("\n\n")
+                        .map((paragraph, index) => (
+                          <p key={index} className="mb-4 text-muted-foreground">
+                            {paragraph}
+                          </p>
+                        ))}
                     </div>
                   </CardContent>
                 </Card>
@@ -237,19 +282,27 @@ export default function IdeaDetailPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-base">Expected Impact</CardTitle>
+                      <CardTitle className="text-base">
+                        Expected Impact
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">{idea.expectedImpact}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {idea.expectedImpact}
+                      </p>
                     </CardContent>
                   </Card>
 
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-base">Resources Needed</CardTitle>
+                      <CardTitle className="text-base">
+                        Resources Needed
+                      </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">{idea.resourcesNeeded}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {idea.resourcesNeeded}
+                      </p>
                     </CardContent>
                   </Card>
                 </div>
@@ -257,12 +310,16 @@ export default function IdeaDetailPage() {
                 {idea.lookingForCollaborators && (
                   <Card>
                     <CardHeader>
-                      <CardTitle className="text-base">Potential Collaborators</CardTitle>
-                      <CardDescription>Companies that could help implement this idea</CardDescription>
+                      <CardTitle className="text-base">
+                        Potential Collaborators
+                      </CardTitle>
+                      <CardDescription>
+                        Companies that could help implement this idea
+                      </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
-                        {idea.potentialCollaborators.map((company, index) => (
+                        {idea.potentialCollaborators?.map((company, index) => (
                           <Badge key={index} variant="secondary">
                             {company}
                           </Badge>
@@ -276,7 +333,9 @@ export default function IdeaDetailPage() {
               <TabsContent value="discussion" className="space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-base">Add Your Comment</CardTitle>
+                    <CardTitle className="text-base">
+                      Add Your Comment
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <Textarea
@@ -286,7 +345,10 @@ export default function IdeaDetailPage() {
                       onChange={(e) => setNewComment(e.target.value)}
                     />
                     <div className="flex justify-end">
-                      <Button onClick={handleAddComment} disabled={!newComment.trim()}>
+                      <Button
+                        onClick={handleAddComment}
+                        disabled={!newComment.trim()}
+                      >
                         Post Comment
                       </Button>
                     </div>
@@ -304,13 +366,21 @@ export default function IdeaDetailPage() {
                         <CardHeader className="pb-2">
                           <div className="flex items-center gap-3">
                             <Avatar className="h-8 w-8">
-                              <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
-                              <AvatarFallback>{comment.author.initials}</AvatarFallback>
+                              <AvatarImage
+                                src={comment.author.avatar}
+                                alt={comment.author.name}
+                              />
+                              <AvatarFallback>
+                                {comment.author.initials}
+                              </AvatarFallback>
                             </Avatar>
                             <div>
-                              <CardTitle className="text-base">{comment.author.name}</CardTitle>
+                              <CardTitle className="text-base">
+                                {comment.author.name}
+                              </CardTitle>
                               <CardDescription>
-                                {comment.author.company} • {format(new Date(comment.date), "MMM d, yyyy")}
+                                {comment.author.company} •{" "}
+                                {format(new Date(comment.date), "MMM d, yyyy")}
                               </CardDescription>
                             </div>
                           </div>
@@ -320,7 +390,11 @@ export default function IdeaDetailPage() {
                         </CardContent>
                         <CardFooter className="pt-0">
                           <div className="flex gap-4">
-                            <Button variant="ghost" size="sm" onClick={() => handleLikeComment(comment.id)}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleLikeComment(comment.id)}
+                            >
                               <ThumbsUp className="mr-1 h-4 w-4" />
                               {comment.likes > 0 && comment.likes}
                             </Button>
@@ -345,7 +419,11 @@ export default function IdeaDetailPage() {
                   <CardTitle>Idea Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Button className="w-full" variant={hasVoted ? "outline" : "default"} onClick={handleVote}>
+                  <Button
+                    className="w-full"
+                    variant={hasVoted ? "outline" : "default"}
+                    onClick={handleVote}
+                  >
                     <ThumbsUp className="mr-2 h-4 w-4" />
                     {hasVoted ? "Voted" : "Vote for this idea"} ({voteCount})
                   </Button>
@@ -375,7 +453,6 @@ export default function IdeaDetailPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
-                    {/* @ts-expect-error Server Component */}
                     {/* TODO: Fix this when ideasData is fetched from the server */}
                     {/* TODO: Add a category property to the Idea type */}
                     {/* TODO: Add a way to fetch similar ideas from the server */}
@@ -456,15 +533,25 @@ export default function IdeaDetailPage() {
                     {/* TODO: Add a way to fetch related manuals from the server */}
                     {/* TODO: Add a way to fetch related specifications from the server */}
                     {ideasData
-                      .filter((i) => i.id !== id && i.category === idea.category)
+                      .filter(
+                        (i) => i.id !== id && i.category === idea.category
+                      )
                       .slice(0, 3)
                       .map((similarIdea) => (
-                        <div key={similarIdea.id} className="group rounded-md p-2 hover:bg-muted transition-colors">
-                          <Link href={`/ideas/${similarIdea.id}`} className="block">
+                        <div
+                          key={similarIdea.id}
+                          className="group rounded-md p-2 hover:bg-muted transition-colors"
+                        >
+                          <Link
+                            href={`/ideas/${similarIdea.id}`}
+                            className="block"
+                          >
                             <p className="font-medium group-hover:text-primary transition-colors">
                               {similarIdea.title}
                             </p>
-                            <p className="text-xs text-muted-foreground">{similarIdea.author.company}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {similarIdea.author.company}
+                            </p>
                           </Link>
                         </div>
                       ))}
@@ -474,20 +561,30 @@ export default function IdeaDetailPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Related Initiatives</CardTitle>
+                  <CardTitle className="text-base">
+                    Related Initiatives
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="group rounded-md p-2 hover:bg-muted transition-colors">
                       <Link href="/initiatives/5" className="block">
-                        <p className="font-medium group-hover:text-primary transition-colors">Zero Waste Operations</p>
-                        <p className="text-xs text-muted-foreground">Virgin Hotels</p>
+                        <p className="font-medium group-hover:text-primary transition-colors">
+                          Zero Waste Operations
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Virgin Hotels
+                        </p>
                       </Link>
                     </div>
                     <div className="group rounded-md p-2 hover:bg-muted transition-colors">
                       <Link href="/initiatives/2" className="block">
-                        <p className="font-medium group-hover:text-primary transition-colors">Ocean Plastic Recovery</p>
-                        <p className="text-xs text-muted-foreground">Virgin Voyages</p>
+                        <p className="font-medium group-hover:text-primary transition-colors">
+                          Ocean Plastic Recovery
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Virgin Voyages
+                        </p>
                       </Link>
                     </div>
                   </div>
@@ -498,6 +595,5 @@ export default function IdeaDetailPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

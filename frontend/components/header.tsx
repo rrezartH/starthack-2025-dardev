@@ -1,9 +1,7 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Bell, Search, Settings, Filter, Download } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,8 +9,10 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Badge } from "@/components/ui/badge"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Bell, Search } from "lucide-react";
+import { useState } from "react";
 
 export default function Header() {
   const [notifications, setNotifications] = useState([
@@ -40,30 +40,32 @@ export default function Header() {
       type: "report",
       read: true,
     },
-  ])
+  ]);
 
-  const unreadCount = notifications.filter((n) => !n.read).length
+  const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAsRead = (id: number) => {
-    setNotifications(notifications.map((n) => (n.id === id ? { ...n, read: true } : n)))
-  }
+    setNotifications(
+      notifications.map((n) => (n.id === id ? { ...n, read: true } : n))
+    );
+  };
 
   const markAllAsRead = () => {
-    setNotifications(notifications.map((n) => ({ ...n, read: true })))
-  }
+    setNotifications(notifications.map((n) => ({ ...n, read: true })));
+  };
 
   const getNotificationTypeClass = (type: string) => {
     switch (type) {
       case "environmental":
-        return "bg-eco-green-light text-eco-green"
+        return "bg-eco-green-light text-eco-green";
       case "collaboration":
-        return "bg-eco-blue-light text-eco-blue"
+        return "bg-eco-blue-light text-eco-blue";
       case "report":
-        return "bg-eco-orange-light text-eco-orange"
+        return "bg-eco-orange-light text-eco-orange";
       default:
-        return "bg-muted text-muted-foreground"
+        return "bg-muted text-muted-foreground";
     }
-  }
+  };
 
   return (
     <header className="border-b bg-background px-6 py-3">
@@ -80,14 +82,6 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Filter className="mr-2 h-4 w-4" />
-            Filters
-          </Button>
-          <Button variant="outline" size="sm">
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" size="icon" className="relative">
@@ -106,14 +100,21 @@ export default function Header() {
               <DropdownMenuLabel className="flex items-center justify-between">
                 Notifications
                 {unreadCount > 0 && (
-                  <Button variant="ghost" size="sm" className="h-auto p-0 text-xs font-normal" onClick={markAllAsRead}>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-auto p-0 text-xs font-normal"
+                    onClick={markAllAsRead}
+                  >
                     Mark all as read
                   </Button>
                 )}
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
               {notifications.length === 0 ? (
-                <div className="py-4 text-center text-sm text-muted-foreground">No notifications</div>
+                <div className="py-4 text-center text-sm text-muted-foreground">
+                  No notifications
+                </div>
               ) : (
                 notifications.map((notification) => (
                   <DropdownMenuItem
@@ -121,16 +122,33 @@ export default function Header() {
                     className="cursor-pointer"
                     onClick={() => markAsRead(notification.id)}
                   >
-                    <div className={`flex w-full flex-col gap-1 py-1 ${!notification.read ? "font-medium" : ""}`}>
+                    <div
+                      className={`flex w-full flex-col gap-1 py-1 ${
+                        !notification.read ? "font-medium" : ""
+                      }`}
+                    >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <div className={`h-2 w-2 rounded-full ${getNotificationTypeClass(notification.type)}`}></div>
+                          <div
+                            className={`h-2 w-2 rounded-full ${getNotificationTypeClass(
+                              notification.type
+                            )}`}
+                          ></div>
                           <span>{notification.title}</span>
                         </div>
-                        {!notification.read && <Badge variant="default" className="h-2 w-2 rounded-full p-0" />}
+                        {!notification.read && (
+                          <Badge
+                            variant="default"
+                            className="h-2 w-2 rounded-full p-0"
+                          />
+                        )}
                       </div>
-                      <span className="text-xs text-muted-foreground">{notification.description}</span>
-                      <span className="text-xs text-muted-foreground">{notification.time}</span>
+                      <span className="text-xs text-muted-foreground">
+                        {notification.description}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {notification.time}
+                      </span>
                     </div>
                   </DropdownMenuItem>
                 ))
@@ -141,13 +159,8 @@ export default function Header() {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <Button variant="outline" size="icon">
-            <Settings className="h-5 w-5" />
-          </Button>
         </div>
       </div>
     </header>
-  )
+  );
 }
-

@@ -1,14 +1,20 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Header from "@/components/header"
-import InitiativeCard from "@/components/initiative-card"
-import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { Search, Plus } from "lucide-react"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import AddInitiativeDialog from "@/components/add-initiative-dialog"
+import AddInitiativeDialog from "@/components/add-initiative-dialog";
+import Header from "@/components/header";
+import InitiativeCard from "@/components/initiative-card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Plus, Search } from "lucide-react";
+import { useState } from "react";
 
 export default function InitiativesPage() {
   // Sample data for initiatives
@@ -86,7 +92,8 @@ export default function InitiativesPage() {
     {
       id: "4",
       title: "Renewable Energy Transition",
-      description: "Transitioning all Virgin properties and operations to 100% renewable energy sources by 2025.",
+      description:
+        "Transitioning all Virgin properties and operations to 100% renewable energy sources by 2025.",
       category: "environmental" as const,
       status: "planned" as const,
       progress: 25,
@@ -190,50 +197,58 @@ export default function InitiativesPage() {
       },
       collaborators: 2,
     },
-  ]
+  ];
 
-  const [searchQuery, setSearchQuery] = useState("")
-  const [selectedCategory, setSelectedCategory] = useState("all")
-  const [selectedStatus, setSelectedStatus] = useState("all")
-  const [selectedCompany, setSelectedCompany] = useState("all")
-  const [sortBy, setSortBy] = useState("progress")
-  const [isAddInitiativeOpen, setIsAddInitiativeOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [selectedCompany, setSelectedCompany] = useState("all");
+  const [sortBy, setSortBy] = useState("progress");
+  const [isAddInitiativeOpen, setIsAddInitiativeOpen] = useState(false);
 
   // Filter initiatives based on search, category, status, and company
   const filteredInitiatives = allInitiatives.filter((initiative) => {
     const matchesSearch =
       searchQuery === "" ||
       initiative.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      initiative.description.toLowerCase().includes(searchQuery.toLowerCase())
+      initiative.description.toLowerCase().includes(searchQuery.toLowerCase());
 
-    const matchesCategory = selectedCategory === "all" || initiative.category === selectedCategory
+    const matchesCategory =
+      selectedCategory === "all" || initiative.category === selectedCategory;
 
-    const matchesStatus = selectedStatus === "all" || initiative.status === selectedStatus
+    const matchesStatus =
+      selectedStatus === "all" || initiative.status === selectedStatus;
 
-    const matchesCompany = selectedCompany === "all" || initiative.company.name === selectedCompany
+    const matchesCompany =
+      selectedCompany === "all" || initiative.company.name === selectedCompany;
 
-    return matchesSearch && matchesCategory && matchesStatus && matchesCompany
-  })
+    return matchesSearch && matchesCategory && matchesStatus && matchesCompany;
+  });
 
   // Sort initiatives
   const sortedInitiatives = [...filteredInitiatives].sort((a, b) => {
     switch (sortBy) {
       case "progress":
-        return b.progress - a.progress
+        return b.progress - a.progress;
       case "impact":
         // Simple impact sorting based on primary impact value
-        const aImpact = Number.parseInt(a.impact.primary.value.replace(/[^0-9]/g, "")) || 0
-        const bImpact = Number.parseInt(b.impact.primary.value.replace(/[^0-9]/g, "")) || 0
-        return bImpact - aImpact
+        const aImpact =
+          Number.parseInt(a.impact.primary.value.replace(/[^0-9]/g, "")) || 0;
+        const bImpact =
+          Number.parseInt(b.impact.primary.value.replace(/[^0-9]/g, "")) || 0;
+        return bImpact - aImpact;
       case "collaborators":
-        return (b.collaborators || 0) - (a.collaborators || 0)
+        return (b.collaborators || 0) - (a.collaborators || 0);
       default:
-        return 0
+        return 0;
     }
-  })
+  });
 
   // Get unique companies for filter
-  const companies = ["all", ...new Set(allInitiatives.map((i) => i.company.name))]
+  const companies = [
+    "all",
+    ...Array.from(new Set(allInitiatives.map((i) => i.company.name))),
+  ];
 
   return (
     <div className="flex flex-col h-screen">
@@ -241,9 +256,12 @@ export default function InitiativesPage() {
       <div className="flex-1 overflow-auto p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">Sustainability Initiatives</h1>
+            <h1 className="text-2xl font-bold tracking-tight">
+              Sustainability Initiatives
+            </h1>
             <p className="text-muted-foreground">
-              Browse, filter, and collaborate on sustainability projects across the Virgin ecosystem
+              Browse, filter, and collaborate on sustainability projects across
+              the Virgin ecosystem
             </p>
           </div>
           <Button onClick={() => setIsAddInitiativeOpen(true)}>
@@ -267,7 +285,10 @@ export default function InitiativesPage() {
               </div>
 
               <div className="md:col-span-2">
-                <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <Select
+                  value={selectedCategory}
+                  onValueChange={setSelectedCategory}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
@@ -281,7 +302,10 @@ export default function InitiativesPage() {
               </div>
 
               <div className="md:col-span-2">
-                <Select value={selectedStatus} onValueChange={setSelectedStatus}>
+                <Select
+                  value={selectedStatus}
+                  onValueChange={setSelectedStatus}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Status" />
                   </SelectTrigger>
@@ -295,7 +319,10 @@ export default function InitiativesPage() {
               </div>
 
               <div className="md:col-span-2">
-                <Select value={selectedCompany} onValueChange={setSelectedCompany}>
+                <Select
+                  value={selectedCompany}
+                  onValueChange={setSelectedCompany}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Company" />
                   </SelectTrigger>
@@ -351,10 +378,13 @@ export default function InitiativesPage() {
               </div>
               <h3 className="mt-4 text-lg font-medium">No initiatives found</h3>
               <p className="mt-2 text-sm text-muted-foreground max-w-md">
-                We couldn't find any initiatives matching your search criteria. Try adjusting your filters or create a
-                new initiative.
+                We couldn't find any initiatives matching your search criteria.
+                Try adjusting your filters or create a new initiative.
               </p>
-              <Button className="mt-4" onClick={() => setIsAddInitiativeOpen(true)}>
+              <Button
+                className="mt-4"
+                onClick={() => setIsAddInitiativeOpen(true)}
+              >
                 <Plus className="mr-2 h-4 w-4" />
                 Create New Initiative
               </Button>
@@ -363,8 +393,10 @@ export default function InitiativesPage() {
         </div>
       </div>
 
-      <AddInitiativeDialog open={isAddInitiativeOpen} onOpenChange={setIsAddInitiativeOpen} />
+      <AddInitiativeDialog
+        open={isAddInitiativeOpen}
+        onOpenChange={setIsAddInitiativeOpen}
+      />
     </div>
-  )
+  );
 }
-
