@@ -13,14 +13,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowRight,
   Calendar,
   Globe,
   Heart,
   Leaf,
-  LineChart,
   Plus,
   Recycle,
 } from "lucide-react";
@@ -299,7 +297,7 @@ export default function Dashboard() {
           <div className="md:col-span-4 lg:col-span-8">
             <div className="grid gap-6 grid-cols-1">
               {/* Impact Metrics */}
-              <Card>
+              {/*               <Card>
                 <CardHeader className="pb-2">
                   <div className="flex items-center justify-between">
                     <div>
@@ -348,7 +346,7 @@ export default function Dashboard() {
                     </div>
                   </div>
                 </CardContent>
-              </Card>
+              </Card> */}
 
               {/* Initiatives Section */}
               <Card>

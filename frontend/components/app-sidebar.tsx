@@ -1,5 +1,6 @@
 "use client";
 
+import { Role } from "@/app/utils/role-mapping";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -24,6 +25,7 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
+import { useUser } from "@clerk/nextjs";
 import {
   BarChart3,
   Calendar,
@@ -47,6 +49,10 @@ export default function AppSidebar() {
   const [open, setOpen] = useState(true);
 
   const isActive = (path: string) => pathname === path;
+
+  const { user } = useUser();
+
+  const role = user?.emailAddresses[0];
 
   return (
     <Sidebar>
@@ -90,7 +96,13 @@ export default function AppSidebar() {
               </SidebarMenuItem>
               <SidebarMenuItem>
                 <SidebarMenuButton asChild isActive={isActive("/analytics")}>
-                  <Link href="/analytics">
+                  <Link
+                    href={
+                      role?.toString() === Role.Admin
+                        ? "/admin/analytics"
+                        : "/analytics"
+                    }
+                  >
                     <BarChart3 />
                     <span>Impact Analytics</span>
                   </Link>
@@ -227,7 +239,11 @@ export default function AppSidebar() {
                 <AvatarFallback>VH</AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start text-sm">
-                <span className="font-medium">Virgin Hotels</span>
+                <span className="font-medium">
+                  {role?.toString() === Role.BrandAdmin
+                    ? "Virgin Hotels"
+                    : "Admin"}
+                </span>
                 <span className="text-xs text-muted-foreground">
                   Sustainability Lead
                 </span>

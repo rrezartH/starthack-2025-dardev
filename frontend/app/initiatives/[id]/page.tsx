@@ -1,55 +1,64 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useParams, notFound } from "next/navigation"
-import Link from "next/link"
-import { getInitiativeById, type Comment } from "@/lib/data"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import Header from "@/components/header";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
-  ChevronLeft,
-  Star,
-  ThumbsUp,
-  MessageSquare,
-  Share2,
-  MapPin,
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { getInitiativeById, type Comment } from "@/lib/data";
+import { format } from "date-fns";
+import {
   Bell,
   BellOff,
-  Users,
   Calendar,
-  Target,
-  ListChecks,
+  ChevronLeft,
   Clock,
-} from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { format } from "date-fns"
-import Header from "@/components/header"
-import { Input } from "@/components/ui/input"
+  ListChecks,
+  MapPin,
+  MessageSquare,
+  Share2,
+  Star,
+  Target,
+  ThumbsUp,
+  Users,
+} from "lucide-react";
+import Link from "next/link";
+import { notFound, useParams } from "next/navigation";
+import { useState } from "react";
 
 interface Update {
-  id: string
-  author: string
-  date: string
-  title: string
-  content: string
-  likes: number
+  id: string;
+  author: string;
+  date: string;
+  title: string;
+  content: string;
+  likes: number;
 }
 
 export default function InitiativeDetailPage() {
-  const { id } = useParams()
-  const initiative = getInitiativeById(id as string)
-  const [newComment, setNewComment] = useState("")
-  const [userRating, setUserRating] = useState(0)
-  const [comments, setComments] = useState<Comment[]>(initiative?.comments || [])
-  const [isFollowing, setIsFollowing] = useState(false)
-  const [likeCount, setLikeCount] = useState(initiative?.ratings.count || 0)
-  const [hasLiked, setHasLiked] = useState(false)
-  const [followerCount, setFollowerCount] = useState(128)
-  const [newUpdateTitle, setNewUpdateTitle] = useState("")
-  const [newUpdateContent, setNewUpdateContent] = useState("")
+  const { id } = useParams();
+  const initiative = getInitiativeById(id as string);
+  const [newComment, setNewComment] = useState("");
+  const [userRating, setUserRating] = useState(0);
+  const [comments, setComments] = useState<Comment[]>(
+    initiative?.comments || []
+  );
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [likeCount, setLikeCount] = useState(initiative?.ratings.count || 0);
+  const [hasLiked, setHasLiked] = useState(false);
+  const [followerCount, setFollowerCount] = useState(128);
+  const [newUpdateTitle, setNewUpdateTitle] = useState("");
+  const [newUpdateContent, setNewUpdateContent] = useState("");
   const [updates, setUpdates] = useState<Update[]>([
     {
       id: "u1",
@@ -69,14 +78,14 @@ export default function InitiativeDetailPage() {
         "We're excited to announce a new partnership with a leading sustainable energy provider that will help us accelerate our goals. This collaboration will enable us to implement innovative solutions across our operations.",
       likes: 18,
     },
-  ])
+  ]);
 
   if (!initiative) {
-    notFound()
+    notFound();
   }
 
   const handleAddComment = () => {
-    if (!newComment || userRating === 0) return
+    if (!newComment || userRating === 0) return;
 
     const comment: Comment = {
       id: `c${Date.now()}`,
@@ -84,25 +93,25 @@ export default function InitiativeDetailPage() {
       date: new Date().toISOString().split("T")[0],
       content: newComment,
       rating: userRating,
-    }
+    };
 
-    setComments([comment, ...comments])
-    setNewComment("")
-    setUserRating(0)
-  }
+    setComments([comment, ...comments]);
+    setNewComment("");
+    setUserRating(0);
+  };
 
   const handleToggleFollow = () => {
-    setIsFollowing(!isFollowing)
-    setFollowerCount(isFollowing ? followerCount - 1 : followerCount + 1)
-  }
+    setIsFollowing(!isFollowing);
+    setFollowerCount(isFollowing ? followerCount - 1 : followerCount + 1);
+  };
 
   const handleToggleLike = () => {
-    setHasLiked(!hasLiked)
-    setLikeCount(hasLiked ? likeCount - 1 : likeCount + 1)
-  }
+    setHasLiked(!hasLiked);
+    setLikeCount(hasLiked ? likeCount - 1 : likeCount + 1);
+  };
 
   const handleAddUpdate = () => {
-    if (!newUpdateTitle.trim() || !newUpdateContent.trim()) return
+    if (!newUpdateTitle.trim() || !newUpdateContent.trim()) return;
 
     const update: Update = {
       id: `u${Date.now()}`,
@@ -111,21 +120,26 @@ export default function InitiativeDetailPage() {
       title: newUpdateTitle,
       content: newUpdateContent,
       likes: 0,
-    }
+    };
 
-    setUpdates([update, ...updates])
-    setNewUpdateTitle("")
-    setNewUpdateContent("")
-  }
+    setUpdates([update, ...updates]);
+    setNewUpdateTitle("");
+    setNewUpdateContent("");
+  };
 
   const handleLikeUpdate = (updateId: string) => {
-    setUpdates(updates.map((update) => (update.id === updateId ? { ...update, likes: update.likes + 1 } : update)))
-  }
+    setUpdates(
+      updates.map((update) =>
+        update.id === updateId ? { ...update, likes: update.likes + 1 } : update
+      )
+    );
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
       <Header />
-      <div className="container py-8 flex-1">
+      {/* Added horizontal padding with px-4 */}
+      <div className="container py-8 px-4 flex-1">
         <Link
           href="/initiatives"
           className="mb-6 inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary"
@@ -138,7 +152,9 @@ export default function InitiativeDetailPage() {
           <div className="lg:col-span-2">
             <div className="mb-6 overflow-hidden rounded-lg">
               <img
-                src={initiative.image || "/placeholder.svg?height=400&width=800"}
+                src={
+                  initiative.image || "/placeholder.svg?height=400&width=800"
+                }
                 alt={initiative.title}
                 className="h-auto w-full object-cover"
               />
@@ -152,16 +168,24 @@ export default function InitiativeDetailPage() {
                     initiative.status === "active"
                       ? "default"
                       : initiative.status === "completed"
-                        ? "secondary"
-                        : "outline"
+                      ? "secondary"
+                      : "outline"
                   }
                 >
                   {initiative.status}
                 </Badge>
                 <div className="ml-auto flex items-center">
-                  <Star className={`h-4 w-4 ${hasLiked ? "fill-primary text-primary" : "text-muted-foreground"}`} />
+                  <Star
+                    className={`h-4 w-4 ${
+                      hasLiked
+                        ? "fill-primary text-primary"
+                        : "text-muted-foreground"
+                    }`}
+                  />
                   <span className="ml-1 text-sm font-medium">{likeCount}</span>
-                  <span className="ml-1 text-xs text-muted-foreground">ratings</span>
+                  <span className="ml-1 text-xs text-muted-foreground">
+                    ratings
+                  </span>
                 </div>
               </div>
               <h1 className="mt-4 text-3xl font-bold">{initiative.title}</h1>
@@ -186,12 +210,16 @@ export default function InitiativeDetailPage() {
                 <TabsTrigger value="overview">Overview</TabsTrigger>
                 <TabsTrigger value="updates">Updates</TabsTrigger>
                 <TabsTrigger value="impact">Impact</TabsTrigger>
-                <TabsTrigger value="feedback">Feedback ({comments.length})</TabsTrigger>
+                <TabsTrigger value="feedback">
+                  Feedback ({comments.length})
+                </TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-6">
                 <div>
-                  <h2 className="text-xl font-semibold mb-2">About this Initiative</h2>
+                  <h2 className="text-xl font-semibold mb-2">
+                    About this Initiative
+                  </h2>
                   <p className="text-muted-foreground">{initiative.summary}</p>
                 </div>
 
@@ -201,7 +229,8 @@ export default function InitiativeDetailPage() {
                     Main Goal
                   </h3>
                   <p className="text-muted-foreground">
-                    To reduce carbon emissions across all Virgin operations by 50% by 2030 and achieve net-zero by 2050.
+                    To reduce carbon emissions across all Virgin operations by
+                    50% by 2030 and achieve net-zero by 2050.
                   </p>
                 </div>
 
@@ -211,10 +240,21 @@ export default function InitiativeDetailPage() {
                     Key Objectives
                   </h3>
                   <ul className="list-disc pl-5 space-y-1 text-muted-foreground">
-                    <li>Transition to sustainable aviation fuel for 30% of flights by 2027</li>
-                    <li>Implement carbon offset programs for all Virgin Atlantic flights</li>
-                    <li>Reduce single-use plastics by 90% across all operations</li>
-                    <li>Collaborate with industry partners to develop new green technologies</li>
+                    <li>
+                      Transition to sustainable aviation fuel for 30% of flights
+                      by 2027
+                    </li>
+                    <li>
+                      Implement carbon offset programs for all Virgin Atlantic
+                      flights
+                    </li>
+                    <li>
+                      Reduce single-use plastics by 90% across all operations
+                    </li>
+                    <li>
+                      Collaborate with industry partners to develop new green
+                      technologies
+                    </li>
                   </ul>
                 </div>
 
@@ -229,8 +269,12 @@ export default function InitiativeDetailPage() {
                         1
                       </div>
                       <div>
-                        <p className="font-medium">Phase 1: Research & Planning</p>
-                        <p className="text-sm text-muted-foreground">Jan 2024 - Jun 2024 (Completed)</p>
+                        <p className="font-medium">
+                          Phase 1: Research & Planning
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Jan 2024 - Jun 2024 (Completed)
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-start">
@@ -238,8 +282,12 @@ export default function InitiativeDetailPage() {
                         2
                       </div>
                       <div>
-                        <p className="font-medium">Phase 2: Initial Implementation</p>
-                        <p className="text-sm text-muted-foreground">Jul 2024 - Dec 2024 (In Progress)</p>
+                        <p className="font-medium">
+                          Phase 2: Initial Implementation
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Jul 2024 - Dec 2024 (In Progress)
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-start">
@@ -247,8 +295,12 @@ export default function InitiativeDetailPage() {
                         3
                       </div>
                       <div>
-                        <p className="font-medium">Phase 3: Scaling & Optimization</p>
-                        <p className="text-sm text-muted-foreground">Jan 2025 - Dec 2025 (Upcoming)</p>
+                        <p className="font-medium">
+                          Phase 3: Scaling & Optimization
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          Jan 2025 - Dec 2025 (Upcoming)
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -258,7 +310,12 @@ export default function InitiativeDetailPage() {
                   <Button size="lg" className="flex-1">
                     {initiative.callToAction}
                   </Button>
-                  <Button variant="outline" size="lg" className="flex-1" asChild>
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="flex-1"
+                    asChild
+                  >
                     <Link href={initiative.link}>Learn More</Link>
                   </Button>
                 </div>
@@ -268,7 +325,8 @@ export default function InitiativeDetailPage() {
                 <div className="bg-muted/30 rounded-lg p-4 border border-border">
                   <h3 className="text-lg font-semibold mb-2">Post an Update</h3>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Share progress, milestones, or news about this initiative. All followers will be notified.
+                    Share progress, milestones, or news about this initiative.
+                    All followers will be notified.
                   </p>
                   <div className="space-y-3">
                     <Input
@@ -283,7 +341,12 @@ export default function InitiativeDetailPage() {
                       onChange={(e) => setNewUpdateContent(e.target.value)}
                     />
                     <div className="flex justify-end">
-                      <Button onClick={handleAddUpdate} disabled={!newUpdateTitle.trim() || !newUpdateContent.trim()}>
+                      <Button
+                        onClick={handleAddUpdate}
+                        disabled={
+                          !newUpdateTitle.trim() || !newUpdateContent.trim()
+                        }
+                      >
                         Post Update
                       </Button>
                     </div>
@@ -293,7 +356,9 @@ export default function InitiativeDetailPage() {
                 <h3 className="text-xl font-semibold">Recent Updates</h3>
 
                 {updates.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">No updates have been posted yet.</div>
+                  <div className="text-center py-8 text-muted-foreground">
+                    No updates have been posted yet.
+                  </div>
                 ) : (
                   <div className="space-y-4">
                     {updates.map((update) => (
@@ -301,22 +366,34 @@ export default function InitiativeDetailPage() {
                         <CardHeader>
                           <div className="flex justify-between items-start">
                             <div>
-                              <CardTitle className="text-lg">{update.title}</CardTitle>
+                              <CardTitle className="text-lg">
+                                {update.title}
+                              </CardTitle>
                               <CardDescription>
-                                Posted by {update.author} on {format(new Date(update.date), "MMMM d, yyyy")}
+                                Posted by {update.author} on{" "}
+                                {format(new Date(update.date), "MMMM d, yyyy")}
                               </CardDescription>
                             </div>
                             <Badge variant="outline">
-                              {update.date === new Date().toISOString().split("T")[0] ? "New" : "Update"}
+                              {update.date ===
+                              new Date().toISOString().split("T")[0]
+                                ? "New"
+                                : "Update"}
                             </Badge>
                           </div>
                         </CardHeader>
                         <CardContent>
-                          <p className="text-muted-foreground">{update.content}</p>
+                          <p className="text-muted-foreground">
+                            {update.content}
+                          </p>
                         </CardContent>
                         <CardFooter className="flex justify-between">
                           <div className="flex items-center gap-4">
-                            <Button variant="ghost" size="sm" onClick={() => handleLikeUpdate(update.id)}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleLikeUpdate(update.id)}
+                            >
                               <ThumbsUp className="mr-1 h-4 w-4" />
                               {update.likes}
                             </Button>
@@ -366,18 +443,27 @@ export default function InitiativeDetailPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Impact Breakdown</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Impact Breakdown
+                  </h3>
                   <div className="space-y-4">
                     <div>
                       <div className="flex items-center justify-between mb-1">
-                        <span className="text-sm">Carbon Reduction Progress</span>
+                        <span className="text-sm">
+                          Carbon Reduction Progress
+                        </span>
                         <span className="text-sm font-medium">65%</span>
                       </div>
                       <div className="h-2 w-full rounded-full bg-muted">
-                        <div className="h-2 rounded-full bg-primary" style={{ width: "65%" }}></div>
+                        <div
+                          className="h-2 rounded-full bg-primary"
+                          style={{ width: "65%" }}
+                        ></div>
                       </div>
                       <div className="flex justify-end mt-1">
-                        <span className="text-xs text-muted-foreground">65% of 2025 target</span>
+                        <span className="text-xs text-muted-foreground">
+                          65% of 2025 target
+                        </span>
                       </div>
                     </div>
 
@@ -387,10 +473,15 @@ export default function InitiativeDetailPage() {
                         <span className="text-sm font-medium">42%</span>
                       </div>
                       <div className="h-2 w-full rounded-full bg-muted">
-                        <div className="h-2 rounded-full bg-primary" style={{ width: "42%" }}></div>
+                        <div
+                          className="h-2 rounded-full bg-primary"
+                          style={{ width: "42%" }}
+                        ></div>
                       </div>
                       <div className="flex justify-end mt-1">
-                        <span className="text-xs text-muted-foreground">42% of 2025 target</span>
+                        <span className="text-xs text-muted-foreground">
+                          42% of 2025 target
+                        </span>
                       </div>
                     </div>
 
@@ -400,17 +491,24 @@ export default function InitiativeDetailPage() {
                         <span className="text-sm font-medium">78%</span>
                       </div>
                       <div className="h-2 w-full rounded-full bg-muted">
-                        <div className="h-2 rounded-full bg-primary" style={{ width: "78%" }}></div>
+                        <div
+                          className="h-2 rounded-full bg-primary"
+                          style={{ width: "78%" }}
+                        ></div>
                       </div>
                       <div className="flex justify-end mt-1">
-                        <span className="text-xs text-muted-foreground">78% of 2025 target</span>
+                        <span className="text-xs text-muted-foreground">
+                          78% of 2025 target
+                        </span>
                       </div>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">Participating Companies</h3>
+                  <h3 className="text-lg font-semibold mb-2">
+                    Participating Companies
+                  </h3>
                   <div className="flex flex-wrap gap-2">
                     <Badge variant="secondary">Virgin Atlantic</Badge>
                     <Badge variant="secondary">Virgin Hotels</Badge>
@@ -428,10 +526,17 @@ export default function InitiativeDetailPage() {
                       <span className="mr-2 text-sm">Your rating:</span>
                       <div className="flex">
                         {[1, 2, 3, 4, 5].map((star) => (
-                          <button key={star} type="button" onClick={() => setUserRating(star)} className="p-1">
+                          <button
+                            key={star}
+                            type="button"
+                            onClick={() => setUserRating(star)}
+                            className="p-1"
+                          >
                             <Star
                               className={`h-5 w-5 ${
-                                userRating >= star ? "fill-primary text-primary" : "text-muted-foreground"
+                                userRating >= star
+                                  ? "fill-primary text-primary"
+                                  : "text-muted-foreground"
                               }`}
                             />
                           </button>
@@ -449,9 +554,13 @@ export default function InitiativeDetailPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <h2 className="text-xl font-semibold">Community Feedback ({comments.length})</h2>
+                  <h2 className="text-xl font-semibold">
+                    Community Feedback ({comments.length})
+                  </h2>
                   {comments.length === 0 ? (
-                    <p className="text-muted-foreground">Be the first to leave feedback on this initiative.</p>
+                    <p className="text-muted-foreground">
+                      Be the first to leave feedback on this initiative.
+                    </p>
                   ) : (
                     comments.map((comment) => (
                       <Card key={comment.id}>
@@ -459,11 +568,17 @@ export default function InitiativeDetailPage() {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <Avatar className="h-8 w-8">
-                                <AvatarFallback>{comment.author.substring(0, 2)}</AvatarFallback>
+                                <AvatarFallback>
+                                  {comment.author.substring(0, 2)}
+                                </AvatarFallback>
                               </Avatar>
                               <div>
-                                <CardTitle className="text-base">{comment.author}</CardTitle>
-                                <CardDescription>{comment.date}</CardDescription>
+                                <CardTitle className="text-base">
+                                  {comment.author}
+                                </CardTitle>
+                                <CardDescription>
+                                  {comment.date}
+                                </CardDescription>
                               </div>
                             </div>
                             <div className="flex">
@@ -471,7 +586,9 @@ export default function InitiativeDetailPage() {
                                 <Star
                                   key={i}
                                   className={`h-4 w-4 ${
-                                    i < comment.rating ? "fill-primary text-primary" : "text-muted-foreground"
+                                    i < comment.rating
+                                      ? "fill-primary text-primary"
+                                      : "text-muted-foreground"
                                   }`}
                                 />
                               ))}
@@ -510,10 +627,16 @@ export default function InitiativeDetailPage() {
               <Card className="sticky top-20">
                 <CardHeader>
                   <CardTitle>Get Involved</CardTitle>
-                  <CardDescription>Join us in making a positive impact</CardDescription>
+                  <CardDescription>
+                    Join us in making a positive impact
+                  </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  <Button className="w-full" variant={isFollowing ? "outline" : "default"} onClick={handleToggleFollow}>
+                  <Button
+                    className="w-full"
+                    variant={isFollowing ? "outline" : "default"}
+                    onClick={handleToggleFollow}
+                  >
                     {isFollowing ? (
                       <>
                         <BellOff className="mr-2 h-4 w-4" />
@@ -526,7 +649,11 @@ export default function InitiativeDetailPage() {
                       </>
                     )}
                   </Button>
-                  <Button variant={hasLiked ? "outline" : "default"} className="w-full" onClick={handleToggleLike}>
+                  <Button
+                    variant={hasLiked ? "outline" : "default"}
+                    className="w-full"
+                    onClick={handleToggleLike}
+                  >
                     <ThumbsUp className="mr-2 h-4 w-4" />
                     {hasLiked ? "Liked" : "Like This Initiative"}
                   </Button>
@@ -540,8 +667,9 @@ export default function InitiativeDetailPage() {
                 </CardContent>
                 <CardFooter>
                   <p className="text-xs text-muted-foreground">
-                    By participating, you're helping Virgin achieve its sustainability goals and creating a better
-                    future for our planet.
+                    By participating, you're helping Virgin achieve its
+                    sustainability goals and creating a better future for our
+                    planet.
                   </p>
                 </CardFooter>
               </Card>
@@ -559,7 +687,9 @@ export default function InitiativeDetailPage() {
                       </Avatar>
                       <div>
                         <p className="text-sm font-medium">Sarah Johnson</p>
-                        <p className="text-xs text-muted-foreground">Virgin Atlantic</p>
+                        <p className="text-xs text-muted-foreground">
+                          Virgin Atlantic
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -569,7 +699,9 @@ export default function InitiativeDetailPage() {
                       </Avatar>
                       <div>
                         <p className="text-sm font-medium">Michael Chen</p>
-                        <p className="text-xs text-muted-foreground">Virgin Hotels</p>
+                        <p className="text-xs text-muted-foreground">
+                          Virgin Hotels
+                        </p>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
@@ -579,7 +711,9 @@ export default function InitiativeDetailPage() {
                       </Avatar>
                       <div>
                         <p className="text-sm font-medium">Emma Wilson</p>
-                        <p className="text-xs text-muted-foreground">Virgin Voyages</p>
+                        <p className="text-xs text-muted-foreground">
+                          Virgin Voyages
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -588,14 +722,20 @@ export default function InitiativeDetailPage() {
 
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-base">Related Initiatives</CardTitle>
+                  <CardTitle className="text-base">
+                    Related Initiatives
+                  </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     <div className="group rounded-md p-2 hover:bg-muted transition-colors">
                       <Link href="/initiatives/2" className="block">
-                        <p className="font-medium group-hover:text-primary transition-colors">Ocean Plastic Recovery</p>
-                        <p className="text-xs text-muted-foreground">Virgin Voyages</p>
+                        <p className="font-medium group-hover:text-primary transition-colors">
+                          Ocean Plastic Recovery
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Virgin Voyages
+                        </p>
                       </Link>
                     </div>
                     <div className="group rounded-md p-2 hover:bg-muted transition-colors">
@@ -603,13 +743,19 @@ export default function InitiativeDetailPage() {
                         <p className="font-medium group-hover:text-primary transition-colors">
                           Renewable Energy Transition
                         </p>
-                        <p className="text-xs text-muted-foreground">Virgin Hotels</p>
+                        <p className="text-xs text-muted-foreground">
+                          Virgin Hotels
+                        </p>
                       </Link>
                     </div>
                     <div className="group rounded-md p-2 hover:bg-muted transition-colors">
                       <Link href="/initiatives/5" className="block">
-                        <p className="font-medium group-hover:text-primary transition-colors">Zero Waste Operations</p>
-                        <p className="text-xs text-muted-foreground">Virgin Group</p>
+                        <p className="font-medium group-hover:text-primary transition-colors">
+                          Zero Waste Operations
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Virgin Group
+                        </p>
                       </Link>
                     </div>
                   </div>
@@ -620,6 +766,5 @@ export default function InitiativeDetailPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

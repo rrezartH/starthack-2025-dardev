@@ -1,35 +1,35 @@
 export interface Initiative {
-  id: string
-  title: string
-  summary: string
-  callToAction: string
-  link: string
-  category: string
-  status: "active" | "completed" | "planned"
+  id: string;
+  title: string;
+  summary: string;
+  callToAction: string;
+  link: string;
+  category: string;
+  status: "active" | "completed" | "planned";
   location: {
-    name: string
-    lat: number
-    lng: number
-  }
-  image: string
+    name: string;
+    lat: number;
+    lng: number;
+  };
+  image: string;
   impact: {
-    co2Reduced: number
-    peopleImpacted: number
-    resourcesSaved: number
-  }
+    co2Reduced: number;
+    peopleImpacted: number;
+    resourcesSaved: number;
+  };
   ratings: {
-    average: number
-    count: number
-  }
-  comments: Comment[]
+    average: number;
+    count: number;
+  };
+  comments: Comment[];
 }
 
 export interface Comment {
-  id: string
-  author: string
-  date: string
-  content: string
-  rating: number
+  id: string;
+  author: string;
+  date: string;
+  content: string;
+  rating: number;
 }
 
 export const initiatives: Initiative[] = [
@@ -47,7 +47,7 @@ export const initiatives: Initiative[] = [
       lat: 51.5074,
       lng: -0.1278,
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/carbon.jpg",
     impact: {
       co2Reduced: 250000,
       peopleImpacted: 5000000,
@@ -70,7 +70,8 @@ export const initiatives: Initiative[] = [
         id: "c2",
         author: "Mark Johnson",
         date: "2023-11-30",
-        content: "Great initiative, but I'd like to see more transparency about how the carbon offsets are being used.",
+        content:
+          "Great initiative, but I'd like to see more transparency about how the carbon offsets are being used.",
         rating: 4,
       },
     ],
@@ -89,7 +90,7 @@ export const initiatives: Initiative[] = [
       lat: 28.3699,
       lng: -177.3734,
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/carbon.jpg",
     impact: {
       co2Reduced: 0,
       peopleImpacted: 1000000,
@@ -113,7 +114,8 @@ export const initiatives: Initiative[] = [
   {
     id: "3",
     title: "Renewable Energy Transition",
-    summary: "Transitioning all Virgin properties and operations to 100% renewable energy sources by 2025.",
+    summary:
+      "Transitioning all Virgin properties and operations to 100% renewable energy sources by 2025.",
     callToAction: "Learn About Renewable Energy",
     link: "/initiatives/renewable-energy-transition",
     category: "Clean Energy",
@@ -123,7 +125,7 @@ export const initiatives: Initiative[] = [
       lat: 40.7128,
       lng: -74.006,
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/carbon.jpg",
     impact: {
       co2Reduced: 750000,
       peopleImpacted: 2000000,
@@ -158,7 +160,7 @@ export const initiatives: Initiative[] = [
       lat: 0,
       lng: 0,
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/carbon.jpg",
     impact: {
       co2Reduced: 320000,
       peopleImpacted: 500000,
@@ -193,7 +195,7 @@ export const initiatives: Initiative[] = [
       lat: 34.0522,
       lng: -118.2437,
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/carbon.jpg",
     impact: {
       co2Reduced: 180000,
       peopleImpacted: 3000000,
@@ -228,7 +230,7 @@ export const initiatives: Initiative[] = [
       lat: 18.2208,
       lng: -66.5901,
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/carbon.jpg",
     impact: {
       co2Reduced: 0,
       peopleImpacted: 100000,
@@ -263,7 +265,7 @@ export const initiatives: Initiative[] = [
       lat: 37.7749,
       lng: -122.4194,
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/carbon.jpg",
     impact: {
       co2Reduced: 420000,
       peopleImpacted: 250000,
@@ -298,7 +300,7 @@ export const initiatives: Initiative[] = [
       lat: -33.8688,
       lng: 151.2093,
     },
-    image: "/placeholder.svg?height=400&width=600",
+    image: "/images/carbon.jpg",
     impact: {
       co2Reduced: 150000,
       peopleImpacted: 1500000,
@@ -319,7 +321,7 @@ export const initiatives: Initiative[] = [
       },
     ],
   },
-]
+];
 
 export const categories = [
   "All",
@@ -330,31 +332,30 @@ export const categories = [
   "Waste Reduction",
   "Conservation",
   "Responsible Travel",
-]
+];
 
-export const statuses = ["All", "active", "completed", "planned"]
+export const statuses = ["All", "active", "completed", "planned"];
 
 export function getInitiativeById(id: string): Initiative | undefined {
-  return initiatives.find((initiative) => initiative.id === id)
+  return initiatives.find((initiative) => initiative.id === id);
 }
 
 export function getInitiativesByCategory(category: string): Initiative[] {
-  if (category === "All") return initiatives
-  return initiatives.filter((initiative) => initiative.category === category)
+  if (category === "All") return initiatives;
+  return initiatives.filter((initiative) => initiative.category === category);
 }
 
 export function getInitiativesByStatus(status: string): Initiative[] {
-  if (status === "All") return initiatives
-  return initiatives.filter((initiative) => initiative.status === status)
+  if (status === "All") return initiatives;
+  return initiatives.filter((initiative) => initiative.status === status);
 }
 
 export function searchInitiatives(query: string): Initiative[] {
-  const lowercaseQuery = query.toLowerCase()
+  const lowercaseQuery = query.toLowerCase();
   return initiatives.filter(
     (initiative) =>
       initiative.title.toLowerCase().includes(lowercaseQuery) ||
       initiative.summary.toLowerCase().includes(lowercaseQuery) ||
-      initiative.category.toLowerCase().includes(lowercaseQuery),
-  )
+      initiative.category.toLowerCase().includes(lowercaseQuery)
+  );
 }
-
