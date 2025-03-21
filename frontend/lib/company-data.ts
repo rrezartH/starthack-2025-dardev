@@ -1,5 +1,35 @@
 // Time-based carbon footprint data for companies
-export const companyTimeSeriesData = {
+interface CompanyData {
+  name: string;
+  logo: string;
+  initials: string;
+  type: string;
+  carbonFootprint: {
+    [key: string]: {
+      current: number;
+      previous: number;
+      trend: number;
+      target2025: number;
+      monthlyData: { date: string; value: number }[];
+    };
+  };
+  wasteReduction: {
+    [key: string]: {
+      current: number;
+      previous: number;
+      trend: number;
+    };
+  };
+  renewableEnergy: {
+    [key: string]: {
+      current: number;
+      previous: number;
+      trend: number;
+    };
+  };
+}
+
+export const companyTimeSeriesData: Record<string, CompanyData> = {
   "1": {
     // Virgin Atlantic
     name: "Virgin Atlantic",
@@ -522,6 +552,7 @@ export function getCompanyDataForTimeframe(
   companyId: string,
   timeframe: string
 ) {
+  if(companyId === undefined || timeframe === undefined) return null;
   const company = companyTimeSeriesData[companyId];
   if (!company) return null;
 
