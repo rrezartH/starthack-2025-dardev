@@ -1,5 +1,11 @@
+import json
+from typing import List
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+import httpx
+from prisma.models import Company
+from prisma.client import Prisma
+from pydantic import BaseModel
 from services.user_service import UserService
 from utils.utils import (
     load_yaml,
@@ -16,6 +22,7 @@ from controllers.dependencies import (
     require_auth,
 )
 from controllers.user_controller import router as user_router
+from controllers.company_controller import router as company_router
 
 logger = get_logger(__name__)
 
@@ -26,6 +33,7 @@ app = FastAPI(lifespan=lifespan)
 router = APIRouter()
 
 app.include_router(user_router)
+app.include_router(company_router)
 
 # Add CORS middleware
 app.add_middleware(

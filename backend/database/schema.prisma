@@ -12,25 +12,47 @@ generator client {
 
 // Non-relation models
 model User {
-  id                  Int                   @id @default(autoincrement())
-  clerk_id            String?               @unique
-  guest_id            String?               @unique
-  email               String?               @unique
-  phone_number        String?
-  username            String
-  first_name          String?
-  last_name           String?
-  gender_id           Int?
-  birth_date          DateTime?
-  location            String?
-  profile_image_url   String?
-  created_at          DateTime              @default(now())
-  updated_at          DateTime?
-  Gender              Gender?               @relation(fields: [gender_id], references: [id])
+  id                Int       @id @default(autoincrement())
+  clerk_id          String?   @unique
+  guest_id          String?   @unique
+  email             String?   @unique
+  phone_number      String?
+  username          String
+  first_name        String?
+  last_name         String?
+  gender_id         Int?
+  birth_date        DateTime?
+  location          String?
+  profile_image_url String?
+  created_at        DateTime  @default(now())
+  updated_at        DateTime?
+  Gender            Gender?   @relation(fields: [gender_id], references: [id])
 }
 
 model Gender {
   id   Int    @id @default(autoincrement())
   name String
   User User[]
+}
+
+model Company {
+  id               Int               @id @default(autoincrement())
+  name             String
+  initiative       String
+  challenge        String
+  description      String
+  cta              String
+  country          String
+  Company1Relation CompanyRelation[] @relation("Company1Relation")
+  Company2Relation CompanyRelation[] @relation("Company2Relation")
+}
+
+model CompanyRelation {
+  id                     Int     @id @default(autoincrement())
+  company_id1            Int
+  company_id2            Int
+  connection_description String
+  relation_percentage    Float
+  Company1               Company @relation("Company1Relation", fields: [company_id1], references: [id])
+  Company2               Company @relation("Company2Relation", fields: [company_id2], references: [id])
 }
