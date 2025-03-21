@@ -3,6 +3,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 
+import { Toaster } from "@/components/ui/toaster";
 import { Inter } from "next/font/google";
 import Script from "next/script";
 import type React from "react";
@@ -13,7 +14,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://clerk-next-app.vercel.app/"),
-  title: "Next.js Clerk Template",
+  title: "Virgin Sustain",
   description:
     "A simple and powerful Next.js template featuring authentication and user management powered by Clerk.",
   openGraph: { images: ["/og.png"] },
@@ -49,6 +50,7 @@ export default function RootLayout({
               <div className="flex min-h-screen w-full">
                 <AppSidebar />
                 <main className="flex-1 overflow-auto">{children}</main>
+                <Toaster />
               </div>
             </SidebarProvider>
           </ThemeProvider>

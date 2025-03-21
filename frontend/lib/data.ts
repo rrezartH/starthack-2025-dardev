@@ -22,6 +22,7 @@ export interface Initiative {
     count: number;
   };
   comments: Comment[];
+  progress?: number;
 }
 
 export interface Comment {

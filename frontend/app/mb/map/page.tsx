@@ -1,42 +1,56 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useRef } from "react"
-import Link from "next/link"
-import { initiatives, categories } from "@/lib/data"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { ChevronLeft, MapPin } from "lucide-react"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { categories, initiatives } from "@/lib/data";
+import { ChevronLeft, MapPin } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 
 export default function MapPage() {
-  const [selectedCategory, setSelectedCategory] = useState("All")
-  const [selectedInitiative, setSelectedInitiative] = useState<string | null>(null)
-  const mapRef = useRef<HTMLDivElement>(null)
-  const [mapLoaded, setMapLoaded] = useState(false)
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedInitiative, setSelectedInitiative] = useState<string | null>(
+    null
+  );
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
-  // Filter initiatives by category
   const filteredInitiatives =
     selectedCategory === "All"
       ? initiatives
-      : initiatives.filter((initiative) => initiative.category === selectedCategory)
+      : initiatives.filter(
+          (initiative) => initiative.category === selectedCategory
+        );
 
-  // Get selected initiative details
-  const selectedInitiativeDetails = initiatives.find((initiative) => initiative.id === selectedInitiative)
+  const selectedInitiativeDetails = initiatives.find(
+    (initiative) => initiative.id === selectedInitiative
+  );
 
-  // Simulate map loading
   useEffect(() => {
     const timer = setTimeout(() => {
-      setMapLoaded(true)
-    }, 1000)
-
-    return () => clearTimeout(timer)
-  }, [])
+      setMapLoaded(true);
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="container py-8">
       <Link
-        href="/"
+        href="/mb"
         className="mb-6 inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary"
       >
         <ChevronLeft className="mr-1 h-4 w-4" />
@@ -45,7 +59,9 @@ export default function MapPage() {
 
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-primary">Geographical Impact</h1>
-        <p className="mt-2 text-muted-foreground">Explore Virgin's sustainability initiatives around the world</p>
+        <p className="mt-2 text-muted-foreground">
+          Explore Virgin's sustainability initiatives around the world
+        </p>
       </div>
 
       <div className="mb-8 flex items-center justify-between">
@@ -87,10 +103,14 @@ export default function MapPage() {
                     <button
                       key={initiative.id}
                       className={`absolute z-10 transform -translate-x-1/2 -translate-y-1/2 transition-all ${
-                        selectedInitiative === initiative.id ? "scale-125" : "hover:scale-110"
+                        selectedInitiative === initiative.id
+                          ? "scale-125"
+                          : "hover:scale-110"
                       }`}
                       style={{
-                        left: `${((initiative.location.lng + 180) / 360) * 100}%`,
+                        left: `${
+                          ((initiative.location.lng + 180) / 360) * 100
+                        }%`,
                         top: `${((90 - initiative.location.lat) / 180) * 100}%`,
                       }}
                       onClick={() => setSelectedInitiative(initiative.id)}
@@ -111,7 +131,9 @@ export default function MapPage() {
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="text-center">
                     <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                    <p className="mt-2 text-sm text-muted-foreground">Loading map...</p>
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Loading map...
+                    </p>
                   </div>
                 </div>
               )}
@@ -124,52 +146,69 @@ export default function MapPage() {
             <Card>
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <Badge variant="outline">{selectedInitiativeDetails.category}</Badge>
+                  <Badge variant="outline">
+                    {selectedInitiativeDetails.category}
+                  </Badge>
                   <Badge
                     variant={
                       selectedInitiativeDetails.status === "active"
                         ? "default"
                         : selectedInitiativeDetails.status === "completed"
-                          ? "secondary"
-                          : "outline"
+                        ? "secondary"
+                        : "outline"
                     }
                   >
                     {selectedInitiativeDetails.status}
                   </Badge>
                 </div>
-                <CardTitle className="mt-2">{selectedInitiativeDetails.title}</CardTitle>
+                <CardTitle className="mt-2">
+                  {selectedInitiativeDetails.title}
+                </CardTitle>
                 <CardDescription className="flex items-center">
                   <MapPin className="mr-1 h-4 w-4" />
-                  {selectedInitiativeDetails.location.name}
+                  {selectedInitiativeDetails.location &&
+                    selectedInitiativeDetails.location.name}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-sm text-muted-foreground">{selectedInitiativeDetails.summary}</p>
+                <p className="text-sm text-muted-foreground">
+                  {selectedInitiativeDetails.summary}
+                </p>
                 <div className="grid grid-cols-3 gap-2 text-center">
                   <div>
                     <div className="text-lg font-bold text-primary">
                       {selectedInitiativeDetails.impact.co2Reduced.toLocaleString()}
                     </div>
-                    <div className="text-xs text-muted-foreground">kg CO₂ Reduced</div>
+                    <div className="text-xs text-muted-foreground">
+                      kg CO₂ Reduced
+                    </div>
                   </div>
                   <div>
                     <div className="text-lg font-bold text-primary">
                       {selectedInitiativeDetails.impact.peopleImpacted.toLocaleString()}
                     </div>
-                    <div className="text-xs text-muted-foreground">People Impacted</div>
+                    <div className="text-xs text-muted-foreground">
+                      People Impacted
+                    </div>
                   </div>
                   <div>
                     <div className="text-lg font-bold text-primary">
                       {selectedInitiativeDetails.impact.resourcesSaved.toLocaleString()}
                     </div>
-                    <div className="text-xs text-muted-foreground">Resources Saved</div>
+                    <div className="text-xs text-muted-foreground">
+                      Resources Saved
+                    </div>
                   </div>
                 </div>
                 <div className="flex flex-col gap-2">
                   <Button asChild>
-                    <Link href={`/initiatives/${selectedInitiativeDetails.id}`}>View Details</Link>
+                    <Link href={`/initiatives/${selectedInitiativeDetails.id}`}>
+                      View Details
+                    </Link>
                   </Button>
-                  <Button variant="outline">{selectedInitiativeDetails.callToAction}</Button>
+                  <Button variant="outline">
+                    {selectedInitiativeDetails.callToAction}
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -177,20 +216,29 @@ export default function MapPage() {
             <Card>
               <CardHeader>
                 <CardTitle>Initiative Details</CardTitle>
-                <CardDescription>Select an initiative on the map to view details</CardDescription>
+                <CardDescription>
+                  Select an initiative on the map to view details
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <p className="text-sm text-muted-foreground">
-                    Click on any marker on the map to see detailed information about that sustainability initiative.
+                    Click on any marker on the map to see detailed information
+                    about that sustainability initiative.
                   </p>
                   <div className="space-y-2">
-                    <h3 className="text-sm font-medium">Initiative Count by Region:</h3>
+                    <h3 className="text-sm font-medium">
+                      Initiative Count by Region:
+                    </h3>
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <span className="text-sm">Global</span>
                         <span className="text-sm font-medium">
-                          {initiatives.filter((i) => i.location.name === "Global").length}
+                          {
+                            initiatives.filter(
+                              (i) => i.location && i.location.name === "Global"
+                            ).length
+                          }
                         </span>
                       </div>
                       <div className="flex items-center justify-between">
@@ -199,10 +247,11 @@ export default function MapPage() {
                           {
                             initiatives.filter(
                               (i) =>
+                                i.location &&
                                 i.location.lat > 20 &&
                                 i.location.lat < 70 &&
                                 i.location.lng > -140 &&
-                                i.location.lng < -50,
+                                i.location.lng < -50
                             ).length
                           }
                         </span>
@@ -213,10 +262,11 @@ export default function MapPage() {
                           {
                             initiatives.filter(
                               (i) =>
+                                i.location &&
                                 i.location.lat > 35 &&
                                 i.location.lat < 70 &&
                                 i.location.lng > -10 &&
-                                i.location.lng < 40,
+                                i.location.lng < 40
                             ).length
                           }
                         </span>
@@ -227,10 +277,11 @@ export default function MapPage() {
                           {
                             initiatives.filter(
                               (i) =>
+                                i.location &&
                                 i.location.lat > -40 &&
                                 i.location.lat < 40 &&
                                 i.location.lng > 100 &&
-                                i.location.lng < 180,
+                                i.location.lng < 180
                             ).length
                           }
                         </span>
@@ -246,7 +297,10 @@ export default function MapPage() {
             <CardHeader>
               <CardTitle>Initiatives List</CardTitle>
               <CardDescription>
-                All initiatives in {selectedCategory === "All" ? "all categories" : selectedCategory}
+                All initiatives in{" "}
+                {selectedCategory === "All"
+                  ? "all categories"
+                  : selectedCategory}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -255,15 +309,21 @@ export default function MapPage() {
                   <button
                     key={initiative.id}
                     className={`w-full rounded-md p-2 text-left transition-colors ${
-                      selectedInitiative === initiative.id ? "bg-primary text-primary-foreground" : "hover:bg-muted"
+                      selectedInitiative === initiative.id
+                        ? "bg-primary text-primary-foreground"
+                        : "hover:bg-muted"
                     }`}
                     onClick={() => setSelectedInitiative(initiative.id)}
                   >
                     <div className="flex items-center">
                       <MapPin className="mr-2 h-4 w-4 shrink-0" />
                       <div>
-                        <div className="text-sm font-medium line-clamp-1">{initiative.title}</div>
-                        <div className="text-xs text-muted-foreground line-clamp-1">{initiative.location.name}</div>
+                        <div className="text-sm font-medium line-clamp-1">
+                          {initiative.title}
+                        </div>
+                        <div className="text-xs text-muted-foreground line-clamp-1">
+                          {initiative.location && initiative.location.name}
+                        </div>
                       </div>
                     </div>
                   </button>
@@ -274,6 +334,5 @@ export default function MapPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
