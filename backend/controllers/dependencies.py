@@ -2,6 +2,7 @@ from contextlib import asynccontextmanager
 import os
 import logging
 from fastapi import Depends, FastAPI, HTTPException, Request
+from services.company_service import CompanyService
 from services.user_service import UserService
 from prisma.client import Prisma
 
@@ -62,22 +63,5 @@ def allow_anonymous():
 def get_user_service(db: Prisma = Depends(get_db)):
     return UserService(db)
 
-
-def get_reaction_service(db: Prisma = Depends(get_db)):
-    return ReactionService(db)
-
-
-def get_user_item_interaction_service(db: Prisma = Depends(get_db)):
-    return UserItemInteractionService(db)
-
-
-def get_user_basket_service(db: Prisma = Depends(get_db)):
-    return UserBasketService(db)
-
-
-def get_merchant_service(db: Prisma = Depends(get_db)):
-    return MerchantService(db)
-
-
-def get_item_service(db: Prisma = Depends(get_db)):
-    return ItemService(db)
+def get_company_service(db: Prisma = Depends(get_db)):
+    return CompanyService(db)
